@@ -18,7 +18,9 @@ the extractive mode keeps working regardless.
 import os
 
 # Gemini model used for the generative mode.
-GEMINI_MODEL = "gemini-2.5-flash"
+# (gemini-2.5-flash is no longer available to new users — Google's API
+# directs new users to gemini-3.8-flash.)
+GEMINI_MODEL = "gemini-3.8-flash"
 
 # The exact refusal the model must produce for out-of-context questions.
 # The backend detects this exact string to set "grounded": false.
