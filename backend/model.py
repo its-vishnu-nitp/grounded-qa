@@ -23,7 +23,12 @@ from transformers import AutoModelForQuestionAnswering, AutoTokenizer
 MODEL_ID = "distilbert-base-uncased-distilled-squad"
 
 # Local folder where the downloaded model is cached (gitignored).
-LOCAL_MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model")
+# Overridable with the MODEL_DIR environment variable (e.g. on Modal the
+# model is baked into the container image at /model -- see modal_app.py).
+LOCAL_MODEL_DIR = os.environ.get(
+    "MODEL_DIR",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "model"),
+)
 
 MAX_LENGTH = 512          # tokens (question + context), same order as the notebook
 MAX_ANSWER_LENGTH = 30    # max answer length in tokens
