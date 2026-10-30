@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GroundedQA — Answers only from your text</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>GroundedQA</h1>
+    <p class="tagline">Answers only from your text — extractive + generative QA</p>
+    <p class="subtitle">
+      Paste a paragraph, ask a question, and get an answer that comes only
+      from your paragraph — never from outside knowledge.
+    </p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <label class="section-label">Answer mode</label>
+      <div class="mode-selector" role="radiogroup" aria-label="Answer mode">
+        <label class="mode-option">
+          <input type="radio" name="mode" value="extractive" checked />
+          <span>Extractive (DistilBERT)</span>
+        </label>
+        <label class="mode-option">
+          <input type="radio" name="mode" value="genai" />
+          <span>Generative AI</span>
+        </label>
+      </div>
+      <p class="mode-hint">
+        <strong>Extractive</strong> pulls the exact answer span out of your
+        paragraph. <strong>Generative AI</strong> writes the answer in its own
+        words using only your paragraph — and refuses if the answer is not in it.
+      </p>
+
+      <div class="field-header">
+        <label for="context">Paragraph / Context</label>
+        <button id="sample-btn" type="button" class="btn btn-secondary">Load Sample</button>
+      </div>
+      <textarea id="context" rows="7"
+        placeholder="Paste the paragraph the question should be answered from..."></textarea>
+
+      <label for="question">Question</label>
+      <input id="question" type="text"
+        placeholder="Ask a question whose answer is in the paragraph above" />
+
+      <button id="ask-btn" type="button" class="btn btn-primary">Get Answer</button>
+
+      <p id="error" class="error hidden" role="alert"></p>
+    </section>
+
+    <section id="result-card" class="card hidden">
+      <h2>Answer</h2>
+      <p id="answer" class="answer"></p>
+      <p id="confidence-line" class="confidence">Confidence: <span id="score"></span></p>
+
+      <div id="context-block">
+        <h3>Answer in context</h3>
+        <p id="context-view" class="context-view"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Built on Vishnu Kumar's
+      <a href="https://github.com/its-vishnu-nitp/stanford-question-answering-system" target="_blank" rel="noopener">
+        Stanford Question Answering System</a>
+      &middot; Extractive: DistilBERT fine-tuned on SQuAD v1.1
+      &middot; Generative: Google Gemini, grounded in your text only
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
