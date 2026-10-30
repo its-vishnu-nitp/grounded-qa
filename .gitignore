@@ -1,0 +1,13 @@
+# Downloaded/cached model weights (created at first run by backend/model.py)
+backend/model/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment / secrets
+.env
