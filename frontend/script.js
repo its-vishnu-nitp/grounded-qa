@@ -3,13 +3,11 @@
 // ----------------------------------------------------------------------------
 // API_BASE_URL is the address of the FastAPI backend.
 //
-// Local development: "http://localhost:8000" (the default below).
+// Local development: "http://localhost:8000".
 //
-// AFTER you deploy the backend to Hugging Face Spaces, replace this value
-// with your Spaces backend URL, for example:
-//   const API_BASE_URL = "https://<username>-groundedqa.hf.space";
+// LIVE backend (Modal): the deployed URL below.
 // ============================================================================
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://its-vishnu-nitp--grounded-qa-fastapi-app.us-east.modal.run";
 
 // Sample from the project README (NIT Patna example).
 const SAMPLE_CONTEXT =
