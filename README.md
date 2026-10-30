@@ -140,7 +140,48 @@ curl -X POST http://localhost:8000/predict \
 
 ## Deployment
 
-### Backend → Hugging Face Spaces
+### Backend → Modal (current plan)
+
+The backend is deployed on [Modal](https://modal.com) (free Starter
+credits) using `backend/modal_app.py`, which serves the existing FastAPI
+app unchanged. The DistilBERT model is **baked into the container image**
+at build time (saved to `/model` inside the image), so runtime cold
+starts load it from disk with no download.
+
+```bash
+# One-time setup: pip install modal && modal setup   (sign in)
+# Deploy, from the PROJECT ROOT:
+modal deploy backend/modal_app.py
+```
+
+Modal prints the public endpoint URL, of the form:
+
+```
+https://<workspace>--grounded-qa-fastapi-app.modal.run
+```
+
+Point the frontend's `API_BASE_URL` (top of `frontend/script.js`) at
+that URL. The endpoint scales to zero after ~5 idle minutes to save
+credits.
+
+**Adding the Gemini key later** (enables Generative AI mode; the deploy
+works fine without it — that mode just returns HTTP 503):
+
+```bash
+modal secret create gemini GEMINI_API_KEY=<your-key>
+```
+
+Then uncomment the `SECRETS` line marked in `backend/modal_app.py` and
+redeploy with `modal deploy backend/modal_app.py`. (The secret is not
+attached by default because Modal refuses to deploy an app that
+references a secret which does not exist yet.)
+
+> **Why not Hugging Face Spaces?** The original plan was a free Docker
+> Space on Hugging Face, but Spaces compute now requires a paid **HF
+> PRO** subscription, so that plan was dropped in favour of Modal. The
+> `backend/Dockerfile` is kept for reference / other Docker hosts.
+
+### Backend → Hugging Face Spaces (superseded — requires HF PRO)
 
 1. Create a free account at <https://huggingface.co> and create a new
    **Space** with SDK = **Docker** (Blank template).
@@ -169,6 +210,7 @@ curl -X POST http://localhost:8000/predict \
 extractive-question-answering/          (repo name: groundedqa)
 ├── backend/
 │   ├── app.py            # FastAPI app: /, /health, /predict (mode-aware, CORS on)
+│   ├── modal_app.py      # Modal deployment (serves app.py; model baked into the image)
 │   ├── model.py          # extractive model download/cache + span extraction
 │   ├── genai.py          # Gemini generative mode + grounding system instruction
 │   ├── requirements.txt
